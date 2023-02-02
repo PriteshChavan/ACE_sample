@@ -1,0 +1,30 @@
+BROKER SCHEMA File_Node.File_Op_Node
+
+
+CREATE COMPUTE MODULE File_Op_Node_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		-- CALL CopyEntireMessage();
+		DECLARE Content CHAR '';
+		SET Content = 'EmpId' || 'EmpDetails' ;
+		
+		SET Content = 'This is before the First propagate' ;
+		
+		propagate;
+		
+		SET Content =Content || 'THIS IS AFTER FIRST PROPAGATE';
+		
+	
+		
+		Set OutputRoot.BLOB.BLOB = CAST(Content AS BLOB CCSID 1208);
+		
+				PROPAGATE TO TERMINAL 1;
+				
+		--set OutputRoot = InputRoot;
+		
+		RETURN false;
+	END;
+
+	
+END MODULE;
